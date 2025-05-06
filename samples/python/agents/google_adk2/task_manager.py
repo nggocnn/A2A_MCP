@@ -18,7 +18,7 @@ from common.types import (
     SendTaskStreamingResponse,
 )
 from common.server.task_manager import InMemoryTaskManager
-from agent import GeneralAgent
+from agent import SonarqubeAgent
 import common.server.utils as utils
 from typing import Union
 import logging
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class AgentTaskManager(InMemoryTaskManager):
 
-    def __init__(self, agent: GeneralAgent):
+    def __init__(self, agent: SonarqubeAgent):
         super().__init__()
         self.agent = agent
 
@@ -99,12 +99,12 @@ class AgentTaskManager(InMemoryTaskManager):
     ) -> None:
         task_send_params: TaskSendParams = request.params
         if not utils.are_modalities_compatible(
-            task_send_params.acceptedOutputModes, GeneralAgent.SUPPORTED_CONTENT_TYPES
+            task_send_params.acceptedOutputModes, SonarqubeAgent.SUPPORTED_CONTENT_TYPES
         ):
             logger.warning(
                 "Unsupported output mode. Received %s, Support %s",
                 task_send_params.acceptedOutputModes,
-                GeneralAgent.SUPPORTED_CONTENT_TYPES,
+                SonarqubeAgent.SUPPORTED_CONTENT_TYPES,
             )
             return utils.new_incompatible_types_error(request.id)
     async def on_send_task(self, request: SendTaskRequest) -> SendTaskResponse:

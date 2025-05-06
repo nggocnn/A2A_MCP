@@ -10,6 +10,7 @@ resolution-markers = [
 [manifest]
 members = [
     "a2a-sample-agent-adk",
+    "a2a-sample-agent-adk2",
     "a2a-sample-agent-langgraph",
     "a2a-sample-client-cli",
     "a2a-sample-client-multiagent",

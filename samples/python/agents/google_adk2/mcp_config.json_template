@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "sonarqube": {
+            "command": "python",
+            "args": [
+                "sonar_mcp.py"
+            ],
+            "env": {
+                "SONARQUBE_URL": "",
+                "SONARQUBE_TOKEN": ""
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 from common.server import A2AServer
 from common.types import AgentCard, AgentCapabilities, AgentSkill, MissingAPIKeyError
 from task_manager import AgentTaskManager
-from agent import ReimbursementAgent
+from agent import GeneralAgent
 import click
 import os
 import logging
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @click.command()
 @click.option("--host", default="localhost")
-@click.option("--port", default=10002)
+@click.option("--port", default=10004)
 def main(host, port):
     try:
         if not os.getenv("GOOGLE_API_KEY"):
@@ -23,25 +23,24 @@ def main(host, port):
         
         capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
-            id="process_reimbursement",
-            name="Process Reimbursement Tool",
-            description="Helps with the reimbursement process for users given the amount and purpose of the reimbursement.",
-            tags=["reimbursement"],
-            examples=["Can you reimburse me $20 for my lunch with the clients?"],
+            id="process_general",
+            name="Process general Tool",
+            description="Helps with the general process",
+            tags=["general"]
         )
         agent_card = AgentCard(
-            name="Reimbursement Agent",
-            description="This agent handles the reimbursement process for the employees given the amount and purpose of the reimbursement.",
+            name="general Agent",
+            description="This agent handles the general process.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
-            defaultInputModes=ReimbursementAgent.SUPPORTED_CONTENT_TYPES,
-            defaultOutputModes=ReimbursementAgent.SUPPORTED_CONTENT_TYPES,
+            defaultInputModes=GeneralAgent.SUPPORTED_CONTENT_TYPES,
+            defaultOutputModes=GeneralAgent.SUPPORTED_CONTENT_TYPES,
             capabilities=capabilities,
             skills=[skill],
         )
         server = A2AServer(
             agent_card=agent_card,
-            task_manager=AgentTaskManager(agent=ReimbursementAgent()),
+            task_manager=AgentTaskManager(agent=GeneralAgent()),
             host=host,
             port=port,
         )

@@ -12,15 +12,18 @@ from google.genai import types
 # Local cache of created request_ids for demo purposes.
 request_ids = set()
 
-
-class GeneralAgent:
-  """An agent that handles general requests."""
+class SonarqubeAgent:
+  """An agent that handles Sonarqube requests."""
 
   SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
 
-  def __init__(self):
-    self._agent = self._build_agent()
+  def __init__(self, tools=[], description=None, instruction=None):
+    
+    self.tools = tools
+    self.description = description
+    self.instruction = instruction
     self._user_id = "remote_agent"
+    self._agent = self._build_agent()
     self._runner = Runner(
         app_name=self._agent.name,
         agent=self._agent,
@@ -87,18 +90,16 @@ class GeneralAgent:
       else:
         yield {
             "is_task_complete": False,
-            "updates": "Processing the request...",
+            "updates": "Processing the Sonarqube request...",
         }
 
   def _build_agent(self) -> LlmAgent:
+    """Builds the LLM agent for the Sonarqube agent."""
     return LlmAgent(
         model="gemini-2.0-flash-001",
-        name="general_agent",
-        description=(
-            "This agent handles general purposes. It can do anything without limited functionalities"
-        ),
-        instruction="""
-    You are an agent who handles general purposes. You should reply to any request that you are assigned to support user.
-    """,
+        name="Sonarqube_agent",
+        description=self.description if self.description is not None else "",
+        instruction=self.instruction if self.instruction is not None else "",
+        tools=self.tools if self.tools is not None else [],
     )
 
