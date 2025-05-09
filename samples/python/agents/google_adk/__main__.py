@@ -30,7 +30,8 @@ def main(host, port):
         )
         agent_card = AgentCard(
             name="general Agent",
-            description="This agent handles the general process.",
+            description="""This agent handles the general process. It can do anything without limited functionalities.
+            If there are tasks that you can not assign to other agent, you can assign it to this agent.""",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=GeneralAgent.SUPPORTED_CONTENT_TYPES,

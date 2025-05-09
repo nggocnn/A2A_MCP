@@ -80,7 +80,7 @@ async def get_agent_async():
     tools, exit_stack = await get_tools_async()
     print(f"Fetched {len(tools)} tools from MCP server.")
     root_agent = SonarqubeAgent(
-        description="This agent handle request for Sonarqube",
+        description="This agent handle request for Sonarqube for creating project, list issues",
         instruction="""
 You are an agent who handles request for Sonarque.
 """,

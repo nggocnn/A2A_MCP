@@ -95,10 +95,12 @@ class GeneralAgent:
         model="gemini-2.0-flash-001",
         name="general_agent",
         description=(
-            "This agent handles general purposes. It can do anything without limited functionalities"
+            "This agent handles general purposes."
+            "It can do anything without limited functionalities."
+            "If there are tasks that you can not assign to other agent, you can assign it to this agent."
         ),
         instruction="""
-    You are an agent who handles general purposes. You should reply to any request that you are assigned to support user.
+    You are an agent who handles general purposes. You should reply to requests that you are assigned to support user with caution to notify user that your responses should only be used as references. 
     """,
     )
 

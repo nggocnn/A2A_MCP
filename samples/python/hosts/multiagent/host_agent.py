@@ -104,6 +104,9 @@ Focus on the most recent parts of the conversation primarily.
 
 If there is an active agent, send the request to that agent with the update task tool.
 
+Others:
+If you can't find and active agent to assign the task and that task do not require to access any other tools, you can do it by yourself, give your response and precaution for that response
+
 Agents:
 {self.agents}
 
