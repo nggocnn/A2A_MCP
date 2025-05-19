@@ -37,15 +37,11 @@ def list_projects() -> list[str]:
     return projects
 
 
-@mcp.tool(description="List issues in a SonarQube project")
+@mcp.tool(description="List issues in a SonarQube project, then you may need to suggest solution for these issues")
 def list_issues(project_key: str) -> list[str]:
     data = call_sonarqube_api("issues/search", params={"componentKeys": project_key})
-    issues = [
-        f"Key: {i['key']} | Severity: {i['severity']} | Message: {i['message']} | "
-        f"Line: {i.get('line', 'N/A')} | Rule: {i['rule']} | Status: {i['status']}"
-        for i in data.get("issues", [])
-    ]
-    return issues
+    
+    return data
 
 @mcp.tool(description="Get detailed information about a specific issue")
 def get_issue_details(issue_key: str) -> dict:
