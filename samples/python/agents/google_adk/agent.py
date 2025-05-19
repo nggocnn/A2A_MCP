@@ -1,13 +1,16 @@
 import json
 import random
-from typing import Any, AsyncIterable, Dict, Optional
+
+from typing import Any, Optional
+
 from google.adk.agents.llm_agent import LlmAgent
-from google.adk.tools.tool_context import ToolContext
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.genai import types
+from google.adk.tools.tool_context import ToolContext
+from task_manager import AgentWithTaskManager
+
 
 # Local cache of created request_ids for demo purposes.
 request_ids = set()
@@ -16,18 +19,18 @@ request_ids = set()
 class GeneralAgent:
   """An agent that handles general requests."""
 
-  SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
+    SUPPORTED_CONTENT_TYPES = ['text', 'text/plain']
 
-  def __init__(self):
-    self._agent = self._build_agent()
-    self._user_id = "remote_agent"
-    self._runner = Runner(
-        app_name=self._agent.name,
-        agent=self._agent,
-        artifact_service=InMemoryArtifactService(),
-        session_service=InMemorySessionService(),
-        memory_service=InMemoryMemoryService(),
-    )
+    def __init__(self):
+        self._agent = self._build_agent()
+        self._user_id = 'remote_agent'
+        self._runner = Runner(
+            app_name=self._agent.name,
+            agent=self._agent,
+            artifact_service=InMemoryArtifactService(),
+            session_service=InMemorySessionService(),
+            memory_service=InMemoryMemoryService(),
+        )
 
   def invoke(self, query, session_id) -> str:
     session = self._runner.session_service.get_session(

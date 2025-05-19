@@ -1,5 +1,17 @@
+import logging
+import os
+
+import click
+
+from agent import ReimbursementAgent
 from common.server import A2AServer
-from common.types import AgentCard, AgentCapabilities, AgentSkill, MissingAPIKeyError
+from common.types import (
+    AgentCapabilities,
+    AgentCard,
+    AgentSkill,
+    MissingAPIKeyError,
+)
+from dotenv import load_dotenv
 from task_manager import AgentTaskManager
 from agent import GeneralAgent
 import click
@@ -18,9 +30,13 @@ logger = logging.getLogger(__name__)
 @click.option("--port", default=10004)
 def main(host, port):
     try:
-        if not os.getenv("GOOGLE_API_KEY"):
-                raise MissingAPIKeyError("GOOGLE_API_KEY environment variable not set.")
-        
+        # Check for API key only if Vertex AI is not configured
+        if not os.getenv('GOOGLE_GENAI_USE_VERTEXAI') == 'TRUE':
+            if not os.getenv('GOOGLE_API_KEY'):
+                raise MissingAPIKeyError(
+                    'GOOGLE_API_KEY environment variable not set and GOOGLE_GENAI_USE_VERTEXAI is not TRUE.'
+                )
+
         capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
             id="process_general",
@@ -47,12 +63,12 @@ def main(host, port):
         )
         server.start()
     except MissingAPIKeyError as e:
-        logger.error(f"Error: {e}")
+        logger.error(f'Error: {e}')
         exit(1)
     except Exception as e:
-        logger.error(f"An error occurred during server startup: {e}")
+        logger.error(f'An error occurred during server startup: {e}')
         exit(1)
-    
-if __name__ == "__main__":
-    main()
 
+
+if __name__ == '__main__':
+    main()
